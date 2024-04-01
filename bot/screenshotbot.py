@@ -30,7 +30,7 @@ class ScreenShotBot(Client):
             lambda: int(time.time()) - Config.SLOW_SPEED_DELAY - 1
         )
         self.broadcast_ids = {}
-
+        
     async def start(self):
         await super().start()
         await self.process_pool.start()
