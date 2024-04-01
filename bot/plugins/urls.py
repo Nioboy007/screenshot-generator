@@ -10,7 +10,7 @@ from ..config import Config
 
 @ScreenShotBot.on_message(
     filters.private
-    & ((filters.text & ~filters.edited) | filters.media)
+    & ((filters.text) | filters.media)
     & filters.incoming
 )
 async def _(c, m):
@@ -28,7 +28,12 @@ async def _(c, m):
     )
 
     if m.media:
-        file_link = Utilities.generate_stream_link(m)
+        await snt.delete()
+        file_link = await Utilities.generate_stream_link(m)
+        snt = await m.reply_text(
+            "Getting Your data...",
+            quote=True,
+        ) 
     else:
         file_link = m.text
 
@@ -42,9 +47,9 @@ async def _(c, m):
     btns = Utilities.gen_ik_buttons()
 
     if duration >= 600:
-        btns.append([InlineKeyboardButton("Generate Sample Video!", "smpl")])
+        btns.append([InlineKeyboardButton("Generate Sample Video", "smpl")])
 
     await snt.edit_text(
-        text=f"Choose one of the options.\n\nTotal duration: `{datetime.timedelta(seconds=duration)}` (`{duration}s`)",
+        text=f"__Choose one of the options 🧐.__\n\n**⏰ Total duration:** `{datetime.timedelta(seconds=duration)}` (`{duration}s`)",
         reply_markup=InlineKeyboardMarkup(btns),
     )
